@@ -16,7 +16,7 @@ const bot = mineflayer.createBot({
   host: 'bmxsmp.playserver.pro', 
   port: 25194,        
   username: 'AntiAFK_Bot',
-  version: '1.21.1' 
+  // REMOVEMOS A VERSÃO FIXA. O Mineflayer vai tentar descobrir e se adaptar sozinho!
 })
 
 bot.on('spawn', () => {
