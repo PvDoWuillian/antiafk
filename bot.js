@@ -20,59 +20,61 @@ const bot = mineflayer.createBot({
   version: false
 })
 
-const SENHA = 'wuillian360'
+const SENHA = 'SUA_SENHA_AQUI'
+let autenticado = false
+
+bot.on('login', () => {
+  console.log('✅ Bot conectou ao servidor!')
+})
 
 bot.on('spawn', () => {
-  console.log('Bot entrou no servidor!')
-
-  // Espera o AuthMe terminar de enviar a mensagem
-  setTimeout(() => {
-    bot.chat(`/login ${SENHA}`)
-    console.log('Tentando fazer login no AuthMe...')
-  }, 3000)
-
-  setInterval(() => {
-    bot.chat('Mantendo o servidor ativo...')
-  }, 180000)
+  console.log('✅ Bot entrou no mundo!')
 })
 
 bot.on('message', (message) => {
   const texto = message.toString()
-  console.log('[CHAT]', texto)
+  console.log('[SERVIDOR]', texto)
 
-  // Se a conta ainda não estiver registrada
+  const msg = texto.toLowerCase()
+
+  // REGISTRO - use somente se a conta ainda não estiver registrada
   if (
-    texto.toLowerCase().includes('registre-se') ||
-    texto.toLowerCase().includes('register') ||
-    texto.toLowerCase().includes('/register')
+    !autenticado &&
+    (
+      msg.includes('register') ||
+      msg.includes('registre') ||
+      msg.includes('registr')
+    )
   ) {
-    setTimeout(() => {
-      bot.chat(`/register ${SENHA} ${SENHA}`)
-      console.log('Conta ainda não registrada. Registrando...')
-    }, 1500)
+    console.log('📝 Servidor pediu registro. Registrando...')
+    bot.chat(`/register ${SENHA} ${SENHA}`)
+    autenticado = true
+    return
   }
 
-  // Se o servidor pedir login
+  // LOGIN
   if (
-    texto.toLowerCase().includes('faça login') ||
-    texto.toLowerCase().includes('login') ||
-    texto.toLowerCase().includes('/login')
+    !autenticado &&
+    (
+      msg.includes('login') ||
+      msg.includes('senha') ||
+      msg.includes('password')
+    )
   ) {
-    setTimeout(() => {
-      bot.chat(`/login ${SENHA}`)
-      console.log('Enviando senha para o AuthMe...')
-    }, 1500)
+    console.log('🔐 Servidor pediu login. Fazendo login...')
+    bot.chat(`/login ${SENHA}`)
+    autenticado = true
   }
 })
 
 bot.on('kicked', (reason) => {
-  console.log('Bot foi expulso:', reason)
+  console.log('❌ Bot foi expulso:', reason)
+})
+
+bot.on('end', (reason) => {
+  console.log('❌ Bot desconectou do servidor:', reason)
 })
 
 bot.on('error', (err) => {
-  console.log('Erro encontrado:', err)
-})
-
-bot.on('end', () => {
-  console.log('Bot desconectou do servidor.')
+  console.log('❌ Erro:', err)
 })
