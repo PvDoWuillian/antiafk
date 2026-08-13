@@ -13,8 +13,8 @@ server.listen(PORT, () => {
 
 // Configuração do robô de Minecraft
 const bot = mineflayer.createBot({
-  host: 'bmxsmp.playserver.pro', 
-  port: 25194,        
+  host: 'bmx.exfrp.zip', 
+  port: 38769,        
   username: 'AntiAFK_Bot',
   // REMOVEMOS A VERSÃO FIXA. O Mineflayer vai tentar descobrir e se adaptar sozinho!
 })
